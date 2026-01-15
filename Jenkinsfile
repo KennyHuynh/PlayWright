@@ -5,7 +5,7 @@ pipeline {
             steps {
                 //checkout scm // Checks out code from your source control management
                 //testing
-                git branch: 'main', url: 'https://github.com/KennyHuynh/PlayWright.git'
+                git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
             }
         }
         stage('Install Dependencies') {

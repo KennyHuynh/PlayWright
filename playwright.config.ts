@@ -1,4 +1,4 @@
-import { defineConfig, devices } from '@playwright/test';
+import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
 
 /**
  * Read environment variables from file.
@@ -11,6 +11,17 @@ import { defineConfig, devices } from '@playwright/test';
 /**
  * See https://playwright.dev/docs/test-configuration.
  */
+const config: PlaywrightTestConfig = {
+  // ... other config ...
+  reporter: [
+    ['html'],
+    ['junit', { outputFile: 'test-results/junit-report.xml' }]
+  ],
+  use: {
+    headless: true, // Run in headless mode for CI/CD
+    // ... other use options ...
+  },
+};
 export default defineConfig({
   testDir: './tests',
   /* Run tests in files in parallel */
@@ -76,4 +87,5 @@ export default defineConfig({
   //   url: 'http://localhost:3000',
   //   reuseExistingServer: !process.env.CI,
   // },
+
 });

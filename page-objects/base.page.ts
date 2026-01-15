@@ -64,6 +64,6 @@ export class BasePage {
 
     async clickToCart(): Promise<void> {
         await this.viewCartButton.first().click();
-        console.log(`Clicked to view cart`);
+        console.log(`Clicked to view cart1231111`);
     }
 }
