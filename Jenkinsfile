@@ -17,7 +17,7 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                sh 'npm run test' // Runs the 'test' script from package.json
+                sh 'npx playwright test --headless --reporter=junit' // Use JUnit reporter for Jenkins
             }
         }
     }
