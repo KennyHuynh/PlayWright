@@ -16,8 +16,8 @@ pipeline {
             steps {
                 script {
                         try {
-                        sh 'npm ci'
-                        sh 'npx playwright install --with-deps'
+                        wsl sh 'npm ci'
+                        wsl sh 'npx playwright install --with-deps'
                         echo 'Completed npm install'
                 } catch (err) {
                         echo "Command failed with error: ${err}"
@@ -28,7 +28,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 println 'Starting test execution'
-                sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
+                wsl sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
             }
         }
     }
