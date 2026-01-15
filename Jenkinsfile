@@ -23,8 +23,8 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            println "Starting test execution"
             steps {
+                println "Starting test execution"
                 sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
             }
         }
