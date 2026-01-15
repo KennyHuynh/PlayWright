@@ -1,0 +1,26 @@
+{
+    "tc01": {
+        "caseId": "TC01",
+        "firstName": "John",
+        "lastName": "Doe",
+        "country": "United States (US)",
+        "streetAddress": "123 Main Street",
+        "city": "New York",
+        "state": "New York",
+        "zipCode": "10001",
+        "phone": "+1-555-0123",
+        "itemName": "Canon i-SENSYS LBP6030W with Wi-Fi",
+        "itemPrice": "$290.00",
+        "email": "loc.huynh@agest.vn"
+    },
+    "tc02": {
+        "caseId": "TC02",
+        "firstName": "Jane",
+        "lastName": "Smith",
+        "country": "Canada",
+        "street": "456 Maple Avenue",
+        "city": "Toronto",
+        "zipCode": "M4B 1B4",
+        "phoneNumber": "+1-416-555-4567"
+    }
+}

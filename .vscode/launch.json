@@ -1,0 +1,25 @@
+{
+  "version": "0.2.0",
+  "configurations": [
+    {
+      "name": "Debug Playwright tests",
+      "request": "launch",
+      "runtimeArgs": [
+        "playwright",
+        "test",
+        // Use -g "" to run all tests or specify a grep pattern
+        // You can replace "" with "@debug" and tag tests in your code with test.only or a specific grep
+        "-g", "", 
+        // Optional: add --debug flag to use Playwright Inspector alongside VS Code debugger
+        // "--debug" 
+      ],
+      "console": "integratedTerminal", // Or "internalConsole"
+      "internalConsoleOptions": "openOnSessionStart",
+      "runtimeExecutable": "npx",
+      "skipFiles": [
+        "<node_internals>/**"
+      ],
+      "type": "node"
+    }
+  ]
+}
