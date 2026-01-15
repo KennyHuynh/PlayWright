@@ -9,23 +9,25 @@ pipeline {
                 //checkout scm // Checks out code from your source control management
                 //testing
                 git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
-                println "Completed checkout stage"
+                println 'Completed checkout stage'
             }
         }
         stage('Install Dependencies') {
             steps {
-                try {
-                    sh 'npm ci'
-                    sh 'npx playwright install --with-deps'
-                    echo 'Completed npm install'
+                script {
+                        try {
+                        sh 'npm ci'
+                        sh 'npx playwright install --with-deps'
+                        echo 'Completed npm install'
                 } catch (err) {
-                    echo "Command failed with error: ${err}"
+                        echo "Command failed with error: ${err}"
+                        }
                 }
             }
         }
         stage('Run Tests') {
             steps {
-                println "Starting test execution"
+                println 'Starting test execution'
                 sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
             }
         }
