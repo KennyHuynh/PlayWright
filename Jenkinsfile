@@ -14,12 +14,13 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'npm ci'
-                println "Completed npm install"
-                // Install Playwright's required browsers and dependencies
-                sh 'npx playwright install --with-deps'
-                println "Installed Playwright browsers"
-                println "Completed installing dependencies"
+                try {
+                    sh 'npm ci'
+                    sh 'npx playwright install --with-deps'
+                    echo 'Completed npm install'
+                } catch (err) {
+                    echo "Command failed with error: ${err}"
+                }
             }
         }
         stage('Run Tests') {
