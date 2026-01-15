@@ -9,13 +9,17 @@ pipeline {
                 //checkout scm // Checks out code from your source control management
                 //testing
                 git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
+                println "Completed checkout stage"
             }
         }
         stage('Install Dependencies') {
             steps {
                 sh 'npm ci'
+                println "Completed npm install"
                 // Install Playwright's required browsers and dependencies
                 sh 'npx playwright install --with-deps'
+                println "Installed Playwright browsers"
+                println "Completed installing dependencies"
             }
         }
         stage('Run Tests') {
