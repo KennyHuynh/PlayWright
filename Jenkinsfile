@@ -27,8 +27,10 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                println 'Starting test execution'
-                wsl sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
+                script {
+                    println 'Starting test execution'
+                    wsl sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
+                }
             }
         }
     }
