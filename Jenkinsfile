@@ -1,22 +1,21 @@
 pipeline {
-    agent any
+    agent none
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
     stages {
         stage('Checkout') {
             steps {
-                //checkout scm // Checks out code from your source control management
-                //testing
-                println 'Starting checkout stage'
-                git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
-                println 'Completed checkout stage'
+                checkout scm // Checks out code from your source control management
             }
         }
         stage('Install Dependencies') {
             agent { label 'linux-agent' }
             steps {
-                sh 'cd workspace/playwright-automation'
+                dir('playwright-automation') {
+                    echo 'Installing npm dependencies'
+                }
+                sh 'git checkout master'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
                 echo 'Completed npm install'
