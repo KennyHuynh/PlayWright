@@ -22,7 +22,7 @@ pipeline {
                     echo "The current user is: ${user}"
                     echo "workspace directory is ${env.WORKSPACE}"
                     echo "Current directory is: ${pwd()}"
-                    if (${ params.RUN_ON } == 'WSL') {
+                    if (${RUN_ON} == 'WSL') {
                         echo 'Running on WSL environment'
                         sh 'npm ci'
                         sh 'npx playwright install webkit'
@@ -39,7 +39,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    if (${ params.RUN_ON } == 'Docker') {
+                    if (${RUN_ON} == 'Docker') {
                         echo 'Executing tests inside Docker container'
                         sh 'docker run --rm playwright-tests:latest'
                     } else {
