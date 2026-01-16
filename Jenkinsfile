@@ -9,7 +9,6 @@ pipeline {
                 //checkout scm // Checks out code from your source control management
                 //testing
                 println 'Starting checkout stage'
-                echo "$PWD"
                 git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
                 println 'Completed checkout stage'
             }
