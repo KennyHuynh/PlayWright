@@ -36,7 +36,7 @@ pipeline {
     post {
         always {
             // Archive the HTML report folder for viewing in Jenkins
-            archiveArtifacts artifacts: 'test-results/**', allowEmptyArchive: true
+            archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
         }
         failure {
             echo 'Tests failed! Check the report for details.'
