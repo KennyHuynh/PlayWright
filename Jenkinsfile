@@ -30,7 +30,7 @@ pipeline {
                     } else {
                         echo 'Running on Docker environment'
                             // Build the Docker image with a tag
-                        sh 'docker build -t playwright-test:latest .'
+                        sh 'docker build -t playwright-test:latest -f DockerFile .'
                 }
             }
                 echo 'Completed npm install'
