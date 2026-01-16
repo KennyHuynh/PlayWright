@@ -9,6 +9,7 @@ pipeline {
         stage('Checkout') {
             steps {
                 checkout scm // Checks out code from your source control management
+                echo 'Completed checkout code from SCM'
             }
         }
         stage('Install Dependencies') {
