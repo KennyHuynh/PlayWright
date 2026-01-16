@@ -21,6 +21,7 @@ pipeline {
                 echo "workspace directory is ${env.WORKSPACE}"
                 echo "Current directory is: ${pwd()}"
                 sh 'npm ci'
+                sh 'npx playwright install webkit'
                 sh 'npx playwright install --with-deps' // Install Playwright browsers with dependencies
                 echo 'Completed npm install'
             }
