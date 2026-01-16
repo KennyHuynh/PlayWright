@@ -12,7 +12,7 @@ pipeline {
                 //testing
                 println 'Starting checkout stage'
                 echo "$PWD"
-                git branch: 'master', url: 'git@github.com:KennyHuynh/PlayWright.git'
+                git branch: 'master', url: 'https://github.com/KennyHuynh/PlayWright.git'
                 println 'Completed checkout stage'
             }
         }
