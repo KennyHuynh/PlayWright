@@ -30,7 +30,7 @@ pipeline {
                     } else {
                         echo 'Running on Docker environment'
                             // Build the Docker image with a tag
-                        sh 'docker build -t DockerFile:${BUILD_ID} .'
+                        sh 'docker build -t playwright-test:latest .'
                 }
             }
                 echo 'Completed npm install'
@@ -38,8 +38,15 @@ pipeline {
     }
         stage('Run Tests') {
             steps {
-                println 'Starting test execution'
-                sh 'npx playwright test'
+                script {
+                    if (${ params.RUN_ON } == 'Docker') {
+                        echo 'Executing tests inside Docker container'
+                        sh 'docker run --rm playwright-tests:latest'
+                    } else {
+                        echo 'Executing tests on WSL environment'
+                        sh 'npx playwright test'
+                    }
+                }
             }
         }
 }
