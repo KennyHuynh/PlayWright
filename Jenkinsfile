@@ -1,7 +1,5 @@
 pipeline {
-    agent {
-        label 'linux-agent' // Use a Linux agent
-    }
+    agent any
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
@@ -17,7 +15,9 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
+            agent { label 'linux-agent' }
             steps {
+                sh 'cd PlayWright'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
                 echo 'Completed npm install'
