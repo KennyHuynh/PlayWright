@@ -3,7 +3,7 @@ pipeline {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
     stages {
-        agent none
+        agent any
         stage('Checkout') {
             steps {
                 checkout scm // Checks out code from your source control management
