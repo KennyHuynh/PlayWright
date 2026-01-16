@@ -23,6 +23,10 @@ const config: PlaywrightTestConfig = {
   },
 };
 export default defineConfig({
+   reporter: [
+    ['html'],
+    ['junit', { outputFile: 'test-results/junit-report.xml' }]
+  ],
   testDir: './tests',
   /* Run tests in files in parallel */
   fullyParallel: true,

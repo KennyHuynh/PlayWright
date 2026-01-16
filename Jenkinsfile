@@ -29,14 +29,12 @@ pipeline {
         stage('Run Tests') {
             steps {
                 println 'Starting test execution'
-                sh 'npx playwright test' // Use JUnit reporter for Jenkins
+                sh 'npx playwright test'
             }
         }
     }
     post {
         always {
-            // Publish JUnit test results
-            junit 'test-results/junit-report.xml'
             // Archive the HTML report folder for viewing in Jenkins
             archiveArtifacts artifacts: 'playwright-report/**', allowEmptyArchive: true
         }
