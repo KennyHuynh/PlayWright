@@ -16,7 +16,7 @@ pipeline {
         stage('Install Dependencies') {
             agent { label 'linux-agent' }
             steps {
-                sh 'cd PlayWright'
+                sh 'cd workspace/playwright-automation'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
                 echo 'Completed npm install'
