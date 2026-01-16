@@ -1,5 +1,7 @@
 pipeline {
-    agent any
+    agent {
+        label 'linux-agent' // Use an agent with Node.js and Playwright dependencies
+    }
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
@@ -10,11 +12,8 @@ pipeline {
             }
         }
         stage('Install Dependencies') {
-            agent { label 'linux-agent' }
             steps {
-                dir('playwright-automation') {
-                    echo 'Installing npm dependencies'
-                }
+                sh 'cd playwright-automation'
                 sh 'git checkout master'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
@@ -22,7 +21,6 @@ pipeline {
             }
         }
         stage('Run Tests') {
-            agent { label 'linux-agent' }
             steps {
                 println 'Starting test execution'
                 sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
