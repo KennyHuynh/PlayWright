@@ -14,7 +14,8 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                echo 'already in playwright-automation directory'
+                echo "workspace directory is ${env.WORKSPACE}"
+                echo "Current directory is: ${pwd()}"
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
                 echo 'Completed npm install'
