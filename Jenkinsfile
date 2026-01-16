@@ -14,7 +14,8 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                echo $(whoami)
+                def whoamiResult = 'whoami'.execute().text.trim() // .trim() removes extra whitespace
+                println "Current User (whoami command): ${whoamiResult}"
                 echo "workspace directory is ${env.WORKSPACE}"
                 echo "Current directory is: ${pwd()}"
                 sh 'npm ci'
