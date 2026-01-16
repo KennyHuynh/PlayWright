@@ -14,7 +14,6 @@ pipeline {
         stage('Install Dependencies') {
             steps {
                 sh 'cd playwright-automation'
-                sh 'git checkout master'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
                 echo 'Completed npm install'
