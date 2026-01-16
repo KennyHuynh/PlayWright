@@ -14,7 +14,6 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                sh 'cd playwright-automation'
                 echo 'already in playwright-automation directory'
                 sh 'npm ci'
                 sh 'npx playwright install --with-deps'
