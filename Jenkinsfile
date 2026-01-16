@@ -29,7 +29,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 println 'Starting test execution'
-                sh 'npx playwright test --reporter=junit' // Use JUnit reporter for Jenkins
+                sh 'npx playwright test' // Use JUnit reporter for Jenkins
             }
         }
     }
