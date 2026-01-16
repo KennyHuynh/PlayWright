@@ -2,6 +2,9 @@ pipeline {
     agent {
         label 'linux-agent' // Use an agent with Node.js and Playwright dependencies
     }
+    parameters {
+        choice(name: 'RUN_ON', choices: ['WSL', 'Docker'], description: 'Machine to run tests on')
+    }
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
@@ -17,22 +20,29 @@ pipeline {
                 script {
                     def user = sh(script: 'whoami', returnStdout: true).trim()
                     echo "The current user is: ${user}"
+                    echo "workspace directory is ${env.WORKSPACE}"
+                    echo "Current directory is: ${pwd()}"
+                    if (${ params.RUN_ON } == 'WSL') {
+                        echo 'Running on WSL environment'
+                        sh 'npm ci'
+                        sh 'npx playwright install webkit'
+                        sh 'npx playwright install --with-deps' // Install Playwright browsers with dependencies
+                    } else {
+                        echo 'Running on Docker environment'
+                            // Build the Docker image with a tag
+                        sh 'docker build -t DockerFile:${BUILD_ID} .'
                 }
-                echo "workspace directory is ${env.WORKSPACE}"
-                echo "Current directory is: ${pwd()}"
-                sh 'npm ci'
-                sh 'npx playwright install webkit'
-                sh 'npx playwright install --with-deps' // Install Playwright browsers with dependencies
-                echo 'Completed npm install'
             }
+                echo 'Completed npm install'
         }
+    }
         stage('Run Tests') {
             steps {
                 println 'Starting test execution'
                 sh 'npx playwright test'
             }
         }
-    }
+}
     post {
         always {
             // Archive the HTML report folder for viewing in Jenkins
