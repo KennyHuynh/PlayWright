@@ -14,7 +14,10 @@ pipeline {
         }
         stage('Install Dependencies') {
             steps {
-                println 'whoami'.execute().text
+                script {
+                    def user = sh(script: 'whoami', returnStdout: true).trim()
+                    echo "The current user is: ${user}"
+                }
                 echo "workspace directory is ${env.WORKSPACE}"
                 echo "Current directory is: ${pwd()}"
                 sh 'npm ci'
