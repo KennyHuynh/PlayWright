@@ -4,22 +4,20 @@ import { LoginPage } from '../../page-objects/login.page';
 import { ElectronicComponentsSupplierPage } from '../../page-objects/electronic-components-supplier.page';
 import { ItemPreview } from '../../page-objects/item-preview';
 import { CheckoutPage } from '../../page-objects/checkout.page';
-import * as dotenv from 'dotenv';
+import { config } from '../../configuration/config';
 
 test("tc01- user can purchase an item successfully", async ({ page, getDataBeforeEach }) => {
-    dotenv.config();
+
     const loginPage = new LoginPage(page);
     const basePage = new BasePage(page);
     const electronicComponentsSupplierPage = new ElectronicComponentsSupplierPage(page);
     const itemPreview = new ItemPreview(page);
     const checkoutPage = new CheckoutPage(page);
-    const username = process.env.TEST_USERNAME;
-    const password = process.env.TEST_PASSWORD;
 
     console.log(getDataBeforeEach);
 
     await basePage.navigate('https://demo.testarchitect.com/my-account/');
-    await loginPage.login(username!, password!);
+    await loginPage.login(config.TEST_USERNAME, config.TEST_PASSWORD);
     await basePage.openMenuItem('All departments -> Electronic Components & Supplies');
 
     await expect.soft(electronicComponentsSupplierPage.activeGridModeGeneric, 'element should be visible').toBeVisible();
@@ -30,7 +28,7 @@ test("tc01- user can purchase an item successfully", async ({ page, getDataBefor
     await itemPreview.clickToCart();
     await expect(checkoutPage.verifyItemInCart(getDataBeforeEach.itemName, getDataBeforeEach.itemPrice)).toBeTruthy();
     await checkoutPage.proceedToCheckout();
-    
+
     await checkoutPage.fillBillingDetails({
         firstName: getDataBeforeEach.firstName,
         lastName: getDataBeforeEach.lastName,
