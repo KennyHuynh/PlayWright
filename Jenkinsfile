@@ -29,19 +29,17 @@ pipeline {
                         sh 'npx playwright install --with-deps' // Install Playwright browsers with dependencies
                     } else {
                         echo 'Running on Docker environment'
-                            // Build the Docker image with a tag
+                        // Build the Docker image with a tag
                         sh 'docker build -t playwright-test:latest -f DockerFile .'
+                    }
                 }
-            }
                 echo 'Completed npm install'
+            }
         }
-    }
         stage('Run Tests') {
             steps {
                 withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-lochuynh', passwordVariable: 'TEST_PASSWORD', usernameVariable: 'TEST_USERNAME']]) {
-    // some block
-                    echo "Username from Vault: ${env.USERNAME}"
-                    echo "Password from Vault: ${env.PASSWORD}"
+                    // some block
                     sh 'export TEST_PASSWORD=$TEST_PASSWORD'
                     sh 'export TEST_USERNAME=$TEST_USERNAME'
                 }
@@ -51,12 +49,14 @@ pipeline {
                         sh 'docker run --rm playwright-tests:latest'
                     } else {
                         echo 'Executing tests on WSL environment'
+                        echo "Username from Vault: ${env.TEST_USERNAME}"
+                        echo "Password from Vault: ${env.TEST_PASSWORD}"
                         sh 'npx playwright test'
                     }
                 }
             }
         }
-}
+    }
     post {
         always {
             // Archive the HTML report folder for viewing in Jenkins
