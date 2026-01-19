@@ -11,7 +11,6 @@ pipeline {
     environment {
         TEST_USERNAME = credentials('vault-lochuynh_usr') // For Secret Text
         TEST_PASSWORD = credentials('vault-lochuynh_psw') // For Secret Text
- 
     }
     stages {
         stage('Checkout') {
@@ -44,14 +43,22 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
-                    if (params.RUN_ON == 'Docker') {
-                        echo 'Executing tests inside Docker container'
-                        sh 'docker run --rm playwright-tests:latest'
+                    withCredentials([
+                        usernamePassword(
+                            credentialsId: 'vault-lochuynh',
+                            usernameVariable: 'TEST_USERNAME',
+                            passwordVariable: 'TEST_PASSWORD'
+                        )
+                    ]) {
+                        if (params.RUN_ON == 'Docker') {
+                            echo 'Executing tests inside Docker container'
+                            sh 'docker run --rm playwright-tests:latest'
                     } else {
-                        sh 'echo "Executing tests on WSL environment"'
-                        sh 'echo "Username from Vault: $TEST_USERNAME"'
-                        sh 'echo "Password from Vault: $TEST_PASSWORD"'
-                        sh 'npx playwright test'
+                            sh 'echo "Executing tests on WSL environment"'
+                            sh 'echo "Username from Vault: $TEST_USERNAME"'
+                            sh 'echo "Password from Vault: $TEST_PASSWORD"'
+                            sh 'npx playwright test'
+                        }
                     }
                 }
             }
