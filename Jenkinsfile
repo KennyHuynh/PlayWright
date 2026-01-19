@@ -38,7 +38,7 @@ pipeline {
     }
         stage('Run Tests') {
             steps {
-                withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-lochuynh', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME']]) {
+                withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-lochuynh', passwordVariable: 'TEST_PASSWORD', usernameVariable: 'TEST_USERNAME']]) {
     // some block
                     echo "Username from Vault: ${env.USERNAME}"
                     echo "Password from Vault: ${env.PASSWORD}"

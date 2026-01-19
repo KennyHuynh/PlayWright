@@ -4,18 +4,22 @@ import { LoginPage } from '../../page-objects/login.page';
 import { ElectronicComponentsSupplierPage } from '../../page-objects/electronic-components-supplier.page';
 import { ItemPreview } from '../../page-objects/item-preview';
 import { CheckoutPage } from '../../page-objects/checkout.page';
+import * as dotenv from 'dotenv';
 
 test("tc01- user can purchase an item successfully", async ({ page, getDataBeforeEach }) => {
+    dotenv.config();
     const loginPage = new LoginPage(page);
     const basePage = new BasePage(page);
     const electronicComponentsSupplierPage = new ElectronicComponentsSupplierPage(page);
     const itemPreview = new ItemPreview(page);
     const checkoutPage = new CheckoutPage(page);
+    const username = process.env.TEST_USERNAME;
+    const password = process.env.TEST_PASSWORD;
 
     console.log(getDataBeforeEach);
 
     await basePage.navigate('https://demo.testarchitect.com/my-account/');
-    await loginPage.login('loc.huynh@agest.vn', '1');
+    await loginPage.login(username!, password!);
     await basePage.openMenuItem('All departments -> Electronic Components & Supplies');
 
     await expect.soft(electronicComponentsSupplierPage.activeGridModeGeneric, 'element should be visible').toBeVisible();
