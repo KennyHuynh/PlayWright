@@ -8,6 +8,11 @@ pipeline {
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
+    environment {
+        TEST_USERNAME = credentials('vault-lochuynh_usr') // For Secret Text
+        TEST_PASSWORD = credentials('vault-lochuynh_psw') // For Secret Text
+ 
+    }
     stages {
         stage('Checkout') {
             steps {
@@ -38,19 +43,14 @@ pipeline {
         }
         stage('Run Tests') {
             steps {
-                withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-lochuynh', passwordVariable: 'TEST_PASSWORD', usernameVariable: 'TEST_USERNAME']]) {
-                    // some block
-                    sh 'export TEST_PASSWORD=$TEST_PASSWORD'
-                    sh 'export TEST_USERNAME=$TEST_USERNAME'
-                }
                 script {
                     if (params.RUN_ON == 'Docker') {
                         echo 'Executing tests inside Docker container'
                         sh 'docker run --rm playwright-tests:latest'
                     } else {
-                        echo 'Executing tests on WSL environment'
-                        echo "Username from Vault: ${env.TEST_USERNAME}"
-                        echo "Password from Vault: ${env.TEST_PASSWORD}"
+                        sh 'echo "Executing tests on WSL environment"'
+                        sh 'echo "Username from Vault: $TEST_USERNAME"'
+                        sh 'echo "Password from Vault: $TEST_PASSWORD"'
                         sh 'npx playwright test'
                     }
                 }
