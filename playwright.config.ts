@@ -23,6 +23,7 @@ const config: PlaywrightTestConfig = {
   },
 };
 export default defineConfig({
+  globalSetup: require.resolve('./configuration/config.ts'),
   reporter: [
     ['html'],
     ['junit', { outputFile: 'test-results/junit-report.xml' }]

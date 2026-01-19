@@ -4,7 +4,6 @@ import { LoginPage } from '../../page-objects/login.page';
 import { ElectronicComponentsSupplierPage } from '../../page-objects/electronic-components-supplier.page';
 import { ItemPreview } from '../../page-objects/item-preview';
 import { CheckoutPage } from '../../page-objects/checkout.page';
-import { config } from '../../configuration/config';
 
 test("tc01- user can purchase an item successfully", async ({ page, getDataBeforeEach }) => {
 
@@ -17,7 +16,7 @@ test("tc01- user can purchase an item successfully", async ({ page, getDataBefor
     console.log(getDataBeforeEach);
 
     await basePage.navigate('https://demo.testarchitect.com/my-account/');
-    await loginPage.login(config.TEST_USERNAME, config.TEST_PASSWORD);
+    await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
     await basePage.openMenuItem('All departments -> Electronic Components & Supplies');
 
     await expect.soft(electronicComponentsSupplierPage.activeGridModeGeneric, 'element should be visible').toBeVisible();
