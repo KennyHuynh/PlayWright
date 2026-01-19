@@ -8,10 +8,6 @@ pipeline {
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
     }
-    environment {
-        TEST_USERNAME = credentials('vault-lochuynh_usr') // For Secret Text
-        TEST_PASSWORD = credentials('vault-lochuynh_psw') // For Secret Text
-    }
     stages {
         stage('Checkout') {
             steps {
