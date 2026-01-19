@@ -42,6 +42,8 @@ pipeline {
     // some block
                     echo "Username from Vault: ${env.USERNAME}"
                     echo "Password from Vault: ${env.PASSWORD}"
+                    sh 'export DB_PASSWORD=$DB_PASSWORD'
+                    sh 'export DB_USERNAME=$DB_USERNAME'
                 }
                 script {
                     if (params.RUN_ON == 'Docker') {
