@@ -38,6 +38,11 @@ pipeline {
     }
         stage('Run Tests') {
             steps {
+                withCredentials([[$class: 'VaultUsernamePasswordCredentialBinding', credentialsId: 'vault-lochuynh', passwordVariable: 'PASSWORD', usernameVariable: 'USERNAME']]) {
+    // some block
+                    echo "Username from Vault: ${env.USERNAME}"
+                    echo "Password from Vault: ${env.PASSWORD}"
+                }
                 script {
                     if (params.RUN_ON == 'Docker') {
                         echo 'Executing tests inside Docker container'
