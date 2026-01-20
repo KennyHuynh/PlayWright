@@ -22,7 +22,7 @@ export class DataLoader {
             const data = fs.readFileSync(this._filePath, 'utf-8');
             return JSON.parse(data);
         } catch (error) {
-            console.error('Error reading JSON file:', error);
+            console.error('No JSON data file is available. Please create one under at this path: ', this._filePath);
             return null;
         }
     }

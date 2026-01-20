@@ -20,9 +20,14 @@ export const test = base.extend<DataFixture>({
         const dataLoader = new DataLoader('');
         fullPath = dataLoader.findFile(`${caseId}.spec.ts`, Path.join(__dirname, '..'));
         const caseData = dataLoader.getDataFromJson(Path.dirname(fullPath?.toString() || '') + Path.sep + 'data' + `.json`);
-        if (caseId in caseData) {
-            console.log(`Loaded data for case ID: ${caseId}`);
-            await use(caseData[caseId]);
+        try {
+            if (caseId in caseData) {
+                console.log(`Loaded data for case ID: ${caseId}`);
+                await use(caseData[caseId]);
+            }
+        } catch (error) {
+            console.error(`No data created for: ${caseId}`, error);
+            await use({});
         }
         // Pass the initialized data to the actual test
     },

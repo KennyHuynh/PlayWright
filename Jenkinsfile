@@ -4,6 +4,7 @@ pipeline {
     }
     parameters {
         choice(name: 'RUN_ON', choices: ['WSL', 'Docker'], description: 'Machine to run tests on')
+        string(name: 'CUSTOM_CASE_TO_RUN', defaultValue: '.', description: 'Input the specific caseID to run, e.g., tc01. Use "." to run all test cases. To run multiple test cases, separate them with | character, e.g., tc01|tc02')
     }
     tools {
         nodejs 'Node16' // Matches the name configured in Global Tool Configuration
@@ -39,6 +40,7 @@ pipeline {
         stage('Run Tests') {
             steps {
                 script {
+                    def caseToRun = params.CUSTOM_CASE_TO_RUN.trim() == '' ? '.' : params.CUSTOM_CASE_TO_RUN.trim()
                     withCredentials([
                         usernamePassword(
                             credentialsId: 'vault-lochuynh',
@@ -48,12 +50,12 @@ pipeline {
                     ]) {
                         if (params.RUN_ON == 'Docker') {
                             echo 'Executing tests inside Docker container'
-                            sh 'docker run --rm playwright-tests:latest'
+                            sh "docker run --rm playwright-tests:latest -g '${ caseToRun }'"
                     } else {
                             sh 'echo "Executing tests on WSL environment"'
                             sh 'echo "Username from Vault: $TEST_USERNAME"'
                             sh 'echo "Password from Vault: $TEST_PASSWORD"'
-                            sh 'npx playwright test'
+                            sh "npx playwright test -g '${ caseToRun }'"
                         }
                     }
                 }
