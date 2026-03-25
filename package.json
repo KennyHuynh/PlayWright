@@ -10,10 +10,13 @@
   "keywords": [],
   "author": "",
   "license": "ISC",
-  "type": "commonjs",
+  "type": "module",
   "devDependencies": {
     "@playwright/test": "^1.57.0",
     "@types/node": "^25.0.7",
     "dotenv": "^17.2.3"
+  },
+  "dependencies": {
+    "typescript": "^6.0.2"
   }
 }

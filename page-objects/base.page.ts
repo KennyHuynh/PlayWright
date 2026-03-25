@@ -1,16 +1,28 @@
 import { expect, Locator, Page } from '@playwright/test';
 
+import { Logger } from '../utility/logger.js';
+import { step } from '../utility/decorator.js';
+import { TestInfo } from '@playwright/test';
+
+
 export class BasePage {
-    private _page: Page;
+    protected _page: Page;
     private readonly viewCartButton: Locator;
 
-    constructor(page: Page) {
+    constructor(page: Page,
+        protected logger: Logger,
+        protected testInfo: TestInfo
+    ) {
         this._page = page;
         this.viewCartButton = page.locator('//span[contains(@class,"et-cart-quantity et-quantity count-")]');
     }
 
     //getter
     get page(): Page {
+        this.logger.log(`[DEBUG] Truy cập vào đối tượng Page lúc: ${new Date().toISOString()}`);
+        if (this._page.isClosed()) {
+            throw new Error("Lỗi: Bạn đang cố thao tác trên một trang đã đóng!");
+        }
         return this._page;
     }
 
@@ -19,9 +31,10 @@ export class BasePage {
         this._page = page;
     }
 
+    @step('Navigate to URL: {0}')
     async navigate(url: string): Promise<void> {
         await this.page.goto(url);
-        console.log(`Navigated to URL: ${url}`);
+        this.logger.log(`Navigated to URL: ${url}`);
     }
 
     async getTitle(): Promise<string> {
@@ -34,14 +47,15 @@ export class BasePage {
 
     async openLink(locator: Locator): Promise<void> {
         await locator.click();
-        console.log(`Opened link with locator: ${locator}`);
+        this.logger.log(`Opened link with locator: ${locator}`);
     }
 
     async close() {
         await this.page.close();
-        console.log(`Page closed`);
+        this.logger.log(`Page closed`);
     }
 
+    @step('The menu item: {0} should display and be clickable')
     async openMenuItem(menuItem: string): Promise<void> {
         if (menuItem.includes('->')) {
             const parts: string[] = menuItem.split('->');
@@ -59,11 +73,11 @@ export class BasePage {
         else {
             await this.page.getByText(menuItem).click();
         }
-        console.log(`Navigated to menu item: ${menuItem}`);
+        this.logger.log(`Navigated to menu item: ${menuItem}`);
     }
 
     async clickToCart(): Promise<void> {
         await this.viewCartButton.first().click();
-        console.log(`Clicked to view cart1231111`);
+        this.logger.log(`Clicked to view cart1231111`);
     }
 }

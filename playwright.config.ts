@@ -1,4 +1,7 @@
 import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
+import { test as base, expect, TestInfo } from '@playwright/test';
+import { DataLoader } from './utility/data.js';
+import { Logger } from './utility/logger.js'; // Import Logger nếu bạn có một lớp Logger riêng
 
 /**
  * Read environment variables from file.
@@ -23,7 +26,7 @@ const config: PlaywrightTestConfig = {
   },
 };
 export default defineConfig({
-  globalSetup: require.resolve('./configuration/config.ts'),
+  globalSetup: './configuration/config.ts',
   reporter: [
     ['html'],
     ['junit', { outputFile: 'test-results/junit-report.xml' }]

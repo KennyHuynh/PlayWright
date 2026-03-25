@@ -13,14 +13,36 @@
         "itemPrice": "$290.00",
         "email": "loc.huynh@agest.vn"
     },
-    "tc02": {
-        "caseId": "TC02",
-        "firstName": "Jane",
-        "lastName": "Smith",
-        "country": "Canada",
-        "street": "456 Maple Avenue",
-        "city": "Toronto",
-        "zipCode": "M4B 1B4",
-        "phoneNumber": "+1-416-555-4567"
-    }
+    "tc03": [
+        {
+            "caseId": "TC03",
+            "firstName": "Jane",
+            "lastName": "Smith",
+            "country": "Canada",
+            "street": "456 Maple Avenue",
+            "city": "Toronto",
+            "zipCode": "M4B 1B4",
+            "phoneNumber": "+1-416-555-4567"
+        },
+        {
+            "caseId": "TC03",
+            "firstName": "Alice",
+            "lastName": "Johnson",
+            "country": "United Kingdom (UK)",
+            "street": "789 Oak Street",
+            "city": "London",
+            "zipCode": "SW1A 1AA",
+            "phoneNumber": "+44-20-7946-0123"
+        },
+        {
+            "caseId": "TC03",
+            "firstName": "Alice",
+            "lastName": "Johnson",
+            "country": "United Kingdom (UK)",
+            "street": "789 Oak Street",
+            "city": "London",
+            "zipCode": "SW1A 1AA",
+            "phoneNumber": "+44-20-7946-0123"
+        }
+    ]
 }

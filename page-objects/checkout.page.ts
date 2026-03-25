@@ -1,4 +1,6 @@
-import { Locator } from '@playwright/test';
+import { Locator, TestInfo } from '@playwright/test';
+import { Logger } from '../utility/logger';
+import { step } from '../utility/decorator';
 import { BasePage } from './base.page';
 
 export class CheckoutPage extends BasePage {
@@ -17,8 +19,8 @@ export class CheckoutPage extends BasePage {
     phoneTextBox: Locator;
     emailTextBox: Locator;
 
-    constructor(page: any) {
-        super(page);
+    constructor(page: any, logger: Logger, testInfo: TestInfo) {
+        super(page, logger, testInfo);
         this.proceedToCheckoutLink = page.getByRole('link', { name: 'PROCEED TO CHECKOUT' });   
         this.itemNameLink = null as unknown as Locator;
         this.itemPriceLink = null as unknown as Locator;
@@ -35,21 +37,18 @@ export class CheckoutPage extends BasePage {
         this.emailTextBox = page.getByRole('textbox', { name: 'Email address *' });
     }
 
+    @step('Proceed to checkout')
     async proceedToCheckout(): Promise<void> {
         await this.proceedToCheckoutLink.click();
         console.log('Proceeded to checkout.');
     }
 
-    async verifyItemInCart(expectedItemName: string, expectedItemPrice: string): Promise<boolean> {
-        this.itemNameLink = this.page.getByRole('link', { name: expectedItemName });
-        this.itemPriceLink = this.page.locator(`//bdi[.='${expectedItemPrice}']`).last();
-        const isItemVisible = await this.itemNameLink.isVisible() ;
-        const isPriceVisible = await this.itemPriceLink.isVisible();
-        const areBothVisible = isItemVisible && isPriceVisible;
-        console.log(`Verifying Item "${expectedItemName}" visibility in cart: ${areBothVisible}`);
-        return areBothVisible;
+    @step('Verify item in cart with name: {0} and price: {1}')
+    async itemInCart(expectedItemName: string, expectedItemPrice: string): Promise<Locator> {
+        return this.page.getByText(expectedItemName).getByText(expectedItemPrice);
     }
 
+    @step('Fill billing details')
     async fillBillingDetails(billingDetails: {
         firstName: string;
         lastName: string;

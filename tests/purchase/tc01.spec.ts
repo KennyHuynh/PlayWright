@@ -1,42 +1,39 @@
-import { expect, test } from '../../fixtures/data-fixture';
-import { BasePage } from '../../page-objects/base.page';
-import { LoginPage } from '../../page-objects/login.page';
-import { ElectronicComponentsSupplierPage } from '../../page-objects/electronic-components-supplier.page';
-import { ItemPreview } from '../../page-objects/item-preview';
-import { CheckoutPage } from '../../page-objects/checkout.page';
+import { expect, test } from '../../fixtures/test-fixture';
 
-test("tc01- user can purchase an item successfully", async ({ page, getDataBeforeEach }) => {
+test("tc01- user can purchase an item successfully", async ({ testData, logger, step, basePage, loginPage, electronicComponentsSupplierPage, itemPreviewPage, checkoutPage }) => {
 
-    const loginPage = new LoginPage(page);
-    const basePage = new BasePage(page);
-    const electronicComponentsSupplierPage = new ElectronicComponentsSupplierPage(page);
-    const itemPreview = new ItemPreview(page);
-    const checkoutPage = new CheckoutPage(page);
+     logger.log(testData);
 
-    console.log(getDataBeforeEach);
+     await step('User logs in to the application', async () => {
+          await basePage.navigate('https://demo.testarchitect.com/my-account/');
+          await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
+     });
 
-    await basePage.navigate('https://demo.testarchitect.com/my-account/');
-    await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
-    await basePage.openMenuItem('All departments -> Electronic Components & Supplies');
+     await step('Switch to list view mode', async () => {
+          await basePage.openMenuItem('All departments -> Electronic Components & Supplies');
+          await expect.soft(electronicComponentsSupplierPage.activeGridModeGeneric, 'VP: Grid mode should be active').toBeVisible();
+          await electronicComponentsSupplierPage.switchToListMode();
+          await expect(electronicComponentsSupplierPage.activeListModeGeneric, 'VP: List mode should be active').toBeVisible();
+     });
 
-    await expect.soft(electronicComponentsSupplierPage.activeGridModeGeneric, 'element should be visible').toBeVisible();
-    await electronicComponentsSupplierPage.listModeGeneric.click()
-    await expect(electronicComponentsSupplierPage.activeListModeGeneric).toBeVisible();
-    await electronicComponentsSupplierPage.selectAnItem(getDataBeforeEach.itemName);
-    await itemPreview.addToCartButton.click();
-    await itemPreview.clickToCart();
-    await expect(checkoutPage.verifyItemInCart(getDataBeforeEach.itemName, getDataBeforeEach.itemPrice)).toBeTruthy();
-    await checkoutPage.proceedToCheckout();
+     await step('Select an item, add to cart and proceed to checkout', async () => {
+          await electronicComponentsSupplierPage.selectAnItem(testData.itemName);
+          await itemPreviewPage.addToCart();
+          expect(await checkoutPage.itemInCart(testData.itemName, testData.itemPrice), 'VP: Item should be in cart').toBeVisible();
+          await checkoutPage.proceedToCheckout();
+     });
 
-    await checkoutPage.fillBillingDetails({
-        firstName: getDataBeforeEach.firstName,
-        lastName: getDataBeforeEach.lastName,
-        country: getDataBeforeEach.country,
-        streetAddress: getDataBeforeEach.streetAddress,
-        city: getDataBeforeEach.city,
-        state: getDataBeforeEach.state,
-        zipCode: getDataBeforeEach.zipCode,
-        phone: getDataBeforeEach.phone,
-        email: getDataBeforeEach.email
-    });
+     await step('Filling bill information', async () => {
+          await checkoutPage.fillBillingDetails({
+               firstName: testData.firstName,
+               lastName: testData.lastName,
+               country: testData.country,
+               streetAddress: testData.streetAddress,
+               city: testData.city,
+               state: testData.state,
+               zipCode: testData.zipCode,
+               phone: testData.phone,
+               email: testData.email
+          });
+     })
 });
