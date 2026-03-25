@@ -1,13 +1,13 @@
 // tests/fixtures/data-fixture.ts
 import { test as base, expect, TestInfo, TestStepInfo } from '@playwright/test';
 import { test as playwrighTest } from '@playwright/test'
-import { DataLoader } from '../utility/data.js';
-import { Logger } from '../utility/logger.js';  // Import Logger nếu bạn có một lớp Logger riêng
+import { DataLoader } from '../utility/data';
+import { Logger } from '../utility/logger';  // Import Logger nếu bạn có một lớp Logger riêng
 import Path from 'path';
-import { BasePage } from '../page-objects/base.page.js';
-import { CheckoutPage } from '../page-objects/checkout.page.js';
-import { ElectronicComponentsSupplierPage } from '../page-objects/electronic-components-supplier.page.js';
-import { ItemPreviewPage } from '../page-objects/item-preview.page.js';
+import { BasePage } from '../page-objects/base.page';
+import { CheckoutPage } from '../page-objects/checkout.page';
+import { ElectronicComponentsSupplierPage } from '../page-objects/electronic-components-supplier.page';
+import { ItemPreviewPage } from '../page-objects/item-preview.page';
 import { LoginPage } from '../page-objects/login.page';
 import { fileURLToPath } from 'url';
 

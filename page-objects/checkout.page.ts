@@ -1,7 +1,8 @@
-import { Locator, TestInfo } from '@playwright/test';
+import { Locator, Page } from '@playwright/test';
+import { BasePage } from './base.page';
 import { Logger } from '../utility/logger';
 import { step } from '../utility/decorator';
-import { BasePage } from './base.page';
+import { TestInfo } from '@playwright/test';
 
 export class CheckoutPage extends BasePage {
     readonly proceedToCheckoutLink: Locator;

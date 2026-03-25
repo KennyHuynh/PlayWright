@@ -1,5 +1,4 @@
 import { expect, Locator, Page } from '@playwright/test';
-
 import { Logger } from '../utility/logger.js';
 import { step } from '../utility/decorator.js';
 import { TestInfo } from '@playwright/test';

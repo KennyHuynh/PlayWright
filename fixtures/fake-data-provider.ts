@@ -1,10 +1,8 @@
 import { DataLoader } from '../utility/data';
 import Path from 'path';
 import { test, expect } from './data-fixture';
-import { BasePage } from '../page-objects/base.page';
 import { fileURLToPath } from 'url';
-import { CheckoutPage } from '../page-objects/checkout.page';
-import { ElectronicComponentsSupplierPage } from '../page-objects/electronic-components-supplier.page';
+
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = Path.dirname(__filename);

@@ -1,6 +1,4 @@
-import { test } from '../fixtures/test-fixture';
-
-let stepStack: number[] = []
+import { test } from '@playwright/test';
 
 function formatStepName(template: string, args: any[]) {
     return template.replace(/{(\d+)}/g, (_, index) => {
