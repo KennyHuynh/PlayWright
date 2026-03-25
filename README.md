@@ -1,5 +1,6 @@
 🎭 Playwright Automation Framework
 A professional end-to-end (E2E) test automation framework built with Playwright and TypeScript, designed for scalability, maintainability, and CI/CD integration across Jenkins and GitHub Actions.
+
 📂 Project Structure
 .github/workflows: CI pipeline for automated test execution using GitHub Actions.
 configuration: Centralized environment configuration and global settings management.
@@ -12,6 +13,7 @@ utility: Shared utilities such as logger, decorators, and helper functions.
 playwright.config.ts: Main Playwright configuration (browser, retries, reporters, etc.).
 Jenkinsfile: CI pipeline definition for Jenkins execution.
 DockerFile: Containerized environment for consistent test execution.
+
 🏗 Architecture Overview
 This framework follows a layered test automation architecture:
 Test Layer → Defines test scenarios (spec files).
@@ -19,6 +21,7 @@ Fixture Layer → Handles setup, teardown, and dependency injection.
 Page Object Layer → Encapsulates UI interactions and selectors.
 Utility Layer → Shared logic (logging, decorators, helpers).
 Execution Layer → Playwright test runner.
+
 ✨ Key Features
 Page Object Model (POM) for clean UI abstraction.
 Custom Fixtures for dependency injection and test isolation.
@@ -29,6 +32,7 @@ CI/CD Ready with Jenkins + GitHub Actions.
 Docker Support for consistent execution environments.
 Type-safe Test Design using TypeScript strict mode.
 Decorator-based Logging System for better traceability.
+
 🛠 Getting Started
 1. Installation
 bash
