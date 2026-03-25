@@ -28,3 +28,15 @@ A professional E2E testing suite built with **Playwright** and **TypeScript**, f
 ```bash
 npm install
 npx playwright install
+
+### 2. Running Tests
+Headless Mode:
+```bash
+npx playwright test
+UI Mode (Debugging):
+```bash
+npx playwright test --ui
+Show Report:
+```bash
+npx playwright show-report
+
