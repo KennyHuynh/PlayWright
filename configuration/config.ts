@@ -1,7 +1,10 @@
 // This ensures dotenv is configured before the config object is accessed
 import { FullConfig } from '@playwright/test';
 import * as dotenv from 'dotenv';
+import { Logger } from '../utility/logger'
 dotenv.config();
+
+const logger = new Logger({logLevel: 'INFO'})
 
 interface Config {
     TEST_USERNAME: string;
@@ -28,7 +31,7 @@ async function globalSetup(config: FullConfig) {
             TEST_PASSWORD: password,
         };
     };
-    console.log('Global setup completed.');
+    logger.debug('Global setup completed.');
 }
 
 export default globalSetup;

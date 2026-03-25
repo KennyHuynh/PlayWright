@@ -40,7 +40,7 @@ export class CheckoutPage extends BasePage {
     @step('Proceed to checkout')
     async proceedToCheckout(): Promise<void> {
         await this.proceedToCheckoutLink.click();
-        console.log('Proceeded to checkout.');
+        this.logger?.debug('Proceeded to checkout.');
     }
 
     @step('Verify item in cart with name: {0} and price: {1}')
@@ -69,6 +69,6 @@ export class CheckoutPage extends BasePage {
         await this.zipCodeTextBox.fill(billingDetails.zipCode);
         await this.phoneTextBox.fill(billingDetails.phone);
         await this.emailTextBox.fill(billingDetails.email);
-        console.log('Filled billing details.');
+        this.logger?.debug('Filled billing details.');
     }
 }

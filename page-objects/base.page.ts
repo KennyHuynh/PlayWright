@@ -19,9 +19,9 @@ export class BasePage {
 
     //getter
     get page(): Page {
-        this.logger.log(`[DEBUG] Truy cập vào đối tượng Page lúc: ${new Date().toISOString()}`);
+        this.logger.debug(`Invoke an instance of page at: ${new Date().toISOString()}`);
         if (this._page.isClosed()) {
-            throw new Error("Lỗi: Bạn đang cố thao tác trên một trang đã đóng!");
+            throw new Error("Error: Trying to perform action on a closed page!");
         }
         return this._page;
     }
@@ -34,7 +34,6 @@ export class BasePage {
     @step('Navigate to URL: {0}')
     async navigate(url: string): Promise<void> {
         await this.page.goto(url);
-        this.logger.log(`Navigated to URL: ${url}`);
     }
 
     async getTitle(): Promise<string> {
@@ -45,14 +44,16 @@ export class BasePage {
         return this.page.url();
     }
 
+    @step("Open link with locator {0}")
     async openLink(locator: Locator): Promise<void> {
         await locator.click();
-        this.logger.log(`Opened link with locator: ${locator}`);
+        this.logger.debug(`Opened link with locator: ${locator}`);
     }
 
+    @step("Closing the page")
     async close() {
         await this.page.close();
-        this.logger.log(`Page closed`);
+        this.logger.debug(`Page closed`);
     }
 
     @step('The menu item: {0} should display and be clickable')
@@ -73,11 +74,12 @@ export class BasePage {
         else {
             await this.page.getByText(menuItem).click();
         }
-        this.logger.log(`Navigated to menu item: ${menuItem}`);
+        this.logger.debug(`Navigated to menu item: ${menuItem}`);
     }
 
+    @step("Open Cart Viewer")
     async clickToCart(): Promise<void> {
         await this.viewCartButton.first().click();
-        this.logger.log(`Clicked to view cart1231111`);
+        this.logger.debug(`Cart View was already opened`);
     }
 }

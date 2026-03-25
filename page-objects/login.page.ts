@@ -21,6 +21,6 @@ export class LoginPage extends BasePage {
         await this.passwordInput.fill(password);
         await this.loginButton.click();
 
-        this.logger?.log(`User logged in: ${username}`);
+        this.logger?.debug(`User logged in: ${username}`);
     }
 }

@@ -76,7 +76,7 @@ export const test = base.extend<Fixtures>({
 
     },
     logger: async ({ }, use, testInfo) => {
-        const logger = new Logger(testInfo, "INFO"); // Initialize your logger with test information
+        const logger = new Logger( {testInfo}); // Initialize your logger with test information
         await use(logger);
     },
 
@@ -129,6 +129,18 @@ export const test = base.extend<Fixtures>({
     itemPreviewPage: async ({ page, logger }, use, testInfo) => {
         const itemPreviewPage = new ItemPreviewPage(page, logger, testInfo);
         await use(itemPreviewPage);
+    }
+});
+
+test.afterEach(async ({ page }, testInfo) => {
+    if (testInfo.status !== testInfo.expectedStatus) {
+        const screenshot = await page.screenshot();
+        if (testInfo) {
+            await testInfo.attach('failure screenshot', {
+                body: screenshot,
+                contentType: 'image/png'
+            });
+        }
     }
 });
 

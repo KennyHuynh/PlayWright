@@ -10,6 +10,6 @@ export class ItemPreviewPage extends BasePage {
     @step('Click on ADD TO CART button')
     async addToCart(): Promise<void> {
         await this.addToCartButton.click();
-        this.logger.log(`Clicked on 'ADD TO CART' button`);
+        this.logger?.debug(`Clicked on 'ADD TO CART' button`);
     }
 }
