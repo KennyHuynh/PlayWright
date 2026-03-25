@@ -1,31 +1,30 @@
-🎭 Playwright Automation Framework
-A robust, scalable, and production-ready E2E testing framework built with Playwright and TypeScript.
-🚀 Overview
-This project is designed with a modern automation architecture, focusing on maintainability, data-driven testing, and seamless CI/CD integration. It leverages Playwright's powerful features to ensure reliable testing across multiple browsers.
-🏗️ Project Structure
-fixtures/: The core of the framework. Contains test-fixture.ts for environment setup and fake-data-provider.ts for dynamic, automated test data generation.
-.github/workflows/ & Jenkinsfile: Ready-to-use CI/CD pipelines for automated test execution on every pull request or scheduled build.
-configuration/: Centralized environment and global settings management, extending the .env capabilities.
-DockerFile: Standardized execution environment to ensure "it works on my machine" consistency across local and server environments.
-playwright.config.ts: Optimized configuration for parallel execution, retries, and multi-browser support (Chromium, Firefox, WebKit).
-✨ Key Features
-Smart Data Injection: Uses custom fixtures and providers to inject mock/fake data automatically into test cases.
-Containerization: Fully Dockerized for easy scaling and cloud deployment.
-Hybrid CI/CD Support: Dual support for GitHub Actions and Jenkins pipelines.
-Type Safety: Built with TypeScript for better developer experience and early bug detection.
-Environment Management: Securely handles sensitive data and environment-specific variables via .env.
-🛠️ Getting Started
-Prerequisites
-Node.js (v18 or higher)
-Docker (optional, for containerized runs)
-Installation
-bash
+# Playwright Automation Framework
+
+A professional E2E testing suite built with **Playwright** and **TypeScript**, featuring automated CI/CD and Docker integration.
+
+## 🏗 Project Structure
+
+- **.github/workflows/**: Automated test execution via GitHub Actions.
+- **configuration/**: Centralized environment management and global settings.
+- **fixtures/**:
+    - `data-fixture.ts`: Manages test data injection.
+    - `fake-data-provider.ts`: Generates dynamic mock data for tests.
+    - `test-fixture.ts`: Custom Playwright test hooks and setup.
+- **Jenkinsfile**: Pipeline configuration for Jenkins CI server.
+- **DockerFile**: Containerization for consistent test environments.
+- **playwright.config.ts**: Main configuration for browsers, retries, and reporters.
+
+## 🚀 Key Features
+
+* **Dynamic Data Generation**: Uses custom providers to create fresh test data for every run.
+* **Hybrid CI/CD Support**: Built-in support for both GitHub Actions and Jenkins.
+* **Environment Isolation**: Secure configuration using `.env` and TypeScript-based config mapping.
+* **Cross-Browser Testing**: Pre-configured for Chromium, Firefox, and WebKit.
+* **Docker Ready**: Easily run tests in isolated containers to avoid "it works on my machine" issues.
+
+## 🛠 Getting Started
+
+### 1. Installation
+```bash
 npm install
 npx playwright install
-Use code with caution.
-
-Running Tests
-Command	Description
-npx playwright test	Run all tests in headless mode
-npx playwright test --ui	Open Playwright UI Mode for debugging
-npx playwright show-report	View the latest HTML test results
