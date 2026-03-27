@@ -11,24 +11,19 @@ import { ItemPreviewPage } from '../page-objects/item-preview.page';
 import { LoginPage } from '../page-objects/login.page';
 import { fileURLToPath } from 'url';
 
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = Path.dirname(__filename);
-type TestData = {
-    itemName: string,
-    itemPrice: string,
-    firstName: string,
-    lastName: string,
-    country: string,
-    streetAddress: string,
-    city: string,
-    state: string,
-    zipCode: string,
-    phone: string,
-    email: string
+type TestData = Record<string, any>;
+
+type TestMetaData = {
+    parentStepNumber: number,
+    childStepNumber: number
 };
 
 // Define the shape of your new fixtures
 type Fixtures = {
+    schema: any,
     testData: TestData;
     logger: Logger; // Replace 'any' with the actual type of your logger if available
     step: (name: string, body: () => Promise<any>) => Promise<any>;
@@ -37,22 +32,45 @@ type Fixtures = {
     electronicComponentsSupplierPage: ElectronicComponentsSupplierPage;
     itemPreviewPage: ItemPreviewPage;
     checkoutPage: CheckoutPage;
+    _stepCount: number;
+    constants: TestMetaData;
 };
 
 
 // Extend the base test
 export const test = base.extend<Fixtures>({
-    testData: async ({ }, use, testInfo) => {
+
+    schema: [undefined, { option: true }],
+
+    testData: async ({ schema }, use, testInfo) => {
         let fullPath: string | null = null;
         // --- Setup (Initialization logic) ---
         let caseId = testInfo.title.split('-')[0].trim();
         const dataLoader = new DataLoader('');
         fullPath = dataLoader.findFile(`${caseId}.spec.ts`, Path.join(__dirname, '..'));
-        const caseData = dataLoader.getDataFromJson(Path.dirname(fullPath?.toString() || '') + Path.sep + 'data' + `.json`);
+        const caseData = dataLoader.getDataFromJson(Path.dirname(fullPath?.toString() || '') + Path.sep + 'data' + `.jsonnet`);
         try {
             if (caseId in caseData) {
                 console.log(`Loaded data for case ID: ${caseId}`);
-                await use(caseData[caseId]);
+                let realCaseData = caseData[caseId];
+                if (schema) {
+                    const result = schema.safeParse(realCaseData);
+
+                    if (!result.success) {
+                        console.log('\n❌ INVALID TEST DATA');
+                        console.log(`Test: ${testInfo.title}\n`);
+
+                        for (const issue of result.error.issues) {
+                            const field = issue.path.join('.') || '(root)';
+
+                            console.log(`👉 Field: ${field}`);
+                            console.log(`   Error: ${issue.message}\n`);
+                        }
+
+                        throw new Error(`Invalid test data → ${testInfo.title}`);
+                    }
+                }
+                await use(realCaseData);
             }
         } catch (error) {
             console.error(`No data created for: ${caseId}`, error);
@@ -76,7 +94,7 @@ export const test = base.extend<Fixtures>({
 
     },
     logger: async ({ }, use, testInfo) => {
-        const logger = new Logger( {testInfo}); // Initialize your logger with test information
+        const logger = new Logger({ testInfo }); // Initialize your logger with test information
         await use(logger);
     },
 
@@ -129,7 +147,7 @@ export const test = base.extend<Fixtures>({
     itemPreviewPage: async ({ page, logger }, use, testInfo) => {
         const itemPreviewPage = new ItemPreviewPage(page, logger, testInfo);
         await use(itemPreviewPage);
-    }
+    },
 });
 
 test.afterEach(async ({ page }, testInfo) => {
