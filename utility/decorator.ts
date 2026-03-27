@@ -44,8 +44,6 @@ export function step(stepName?: string) {
                     logger?.error(`❌ ${name}`);
                     logger?.error(error);
                     logger?.info(`▶ Capturing failed image at afterEach hook}`);
-                    throw error;
-
                 }
                 finally {
                     counter.pop();

@@ -1,12 +1,17 @@
 import { expect, test } from '../../fixtures/test-fixture';
+import { userSchema } from '../../schemas/user.schema';
 
-test("tc01- user can purchase an item successfully", async ({ testData, logger, step, basePage, loginPage, electronicComponentsSupplierPage, itemPreviewPage, checkoutPage }) => {
+test.use(
+     { schema: userSchema }
+);
 
-     logger.log(testData);
+test("tc01- user can purchase an item successfully", async ({ testData, schema, step, basePage, loginPage, electronicComponentsSupplierPage, itemPreviewPage, checkoutPage }) => {
 
+     console.log(testData);
      await step('User logs in to the application', async () => {
           await basePage.navigate('https://demo.testarchitect.com/my-account/');
-          await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
+          //await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
+          await loginPage.login(testData.username, testData.password)
      });
 
      await step('Switch to list view mode', async () => {
@@ -35,5 +40,5 @@ test("tc01- user can purchase an item successfully", async ({ testData, logger, 
                phone: testData.phone,
                email: testData.email
           });
-     })
+     });
 });

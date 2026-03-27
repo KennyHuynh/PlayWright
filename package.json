@@ -17,6 +17,8 @@
     "dotenv": "^17.2.3"
   },
   "dependencies": {
-    "typescript": "^6.0.2"
+    "@unboundedsystems/jsonnet": "^0.9.4-rc6",
+    "typescript": "^6.0.2",
+    "zod": "^4.3.6"
   }
 }

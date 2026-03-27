@@ -1,12 +1,16 @@
 import fs from 'fs';
 import { fileURLToPath } from 'url';
 import path from 'path';
+import { Jsonnet } from '@unboundedsystems/jsonnet';
+import { execSync } from 'child_process';
+
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = path.dirname(__filename);
+const jsonnet = new Jsonnet();
 
 export class DataLoader {
     private _filePath: string;
-  
+
 
     constructor(fileName: string) {
         this._filePath = path.join(__dirname, fileName);
@@ -21,13 +25,16 @@ export class DataLoader {
     }
 
     public getDataFromJson(filePath: string): any {
+        console.log(`file path is: ${filePath}`)
         this._filePath = filePath;
         try {
-            const data = fs.readFileSync(this._filePath, 'utf-8');
-            return JSON.parse(data);
+            const result = execSync(`jsonnet ${filePath}`, {
+                encoding: 'utf-8'
+            });
+            return JSON.parse(result);
         } catch (error) {
             console.error('No JSON data file is available. Please create one under at this path: ', this._filePath);
-            return null;
+            throw error;
         }
     }
 
