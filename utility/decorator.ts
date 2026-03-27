@@ -17,14 +17,14 @@ export function step(stepName?: string) {
             const testInfo = this.testInfo;
             const logger = this.logger
             if (!testInfo) {
-                return await target.call(this, ...args); // Fallback nếu ko có testInfo
+                return await target.call(this, ...args); // Fallback when testInfo is not available
             }
 
             if (!testInfo._stepCounter) {
                 testInfo._stepCounter = [0]
             }
             const counter = testInfo._stepCounter
-            counter[counter.length - 1]++ //Tăng số thứ tự level hiện tại
+            counter[counter.length - 1]++ // Increment the sequence number for the current level
             const currentId = counter.join('.');
             //console.log('this:', this);
 
@@ -44,6 +44,7 @@ export function step(stepName?: string) {
                     logger?.error(`❌ ${name}`);
                     logger?.error(error);
                     logger?.info(`▶ Capturing failed image at afterEach hook}`);
+                    throw error;
                 }
                 finally {
                     counter.pop();

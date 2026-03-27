@@ -36,7 +36,7 @@ export class Logger {
 
     constructor(options: LoggerOptions = {}){
         this.testInfo = options.testInfo;
-        this.logLevel = options.logLevel ?? resolveLogLevel(); 
+        this.logLevel = options.logLevel ?? resolveLogLevel();
     }
 
     private shouldLog(level: LogLevel) {
@@ -62,12 +62,12 @@ export class Logger {
 
         console.log(msg);
 
-        // Optional: attach log vào report (chỉ cho warn + error)
+        // Optional: attach logs to the report (warn and error only)
         if (level === 'WARN' || level === 'ERROR') {
             if(this.testInfo){
 
             }
-            
+
         }
     }
 

@@ -22,7 +22,7 @@ export class CheckoutPage extends BasePage {
 
     constructor(page: any, logger: Logger, testInfo: TestInfo) {
         super(page, logger, testInfo);
-        this.proceedToCheckoutLink = page.getByRole('link', { name: 'PROCEED TO CHECKOUT' });   
+        this.proceedToCheckoutLink = page.getByRole('link', { name: 'CHECKOUT' });
         this.itemNameLink = null as unknown as Locator;
         this.itemPriceLink = null as unknown as Locator;
         this.firstNameTextBox = page.getByRole('textbox', { name: 'First name *' });
@@ -44,9 +44,8 @@ export class CheckoutPage extends BasePage {
         this.logger?.debug('Proceeded to checkout.');
     }
 
-    @step('Verify item in cart with name: {0} and price: {1}')
-    async itemInCart(expectedItemName: string, expectedItemPrice: string): Promise<Locator> {
-        return this.page.getByText(expectedItemName).getByText(expectedItemPrice);
+    getItemInCart(expectedItemName: string, expectedItemPrice: string): Locator {
+        return this.page.locator(`.cart-item:has-text("${expectedItemName}")`).locator(`:has-text("${expectedItemPrice}")`);
     }
 
     @step('Fill billing details')

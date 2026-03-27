@@ -1,16 +1,17 @@
 import { expect, test } from '../../fixtures/test-fixture';
-import { userSchema } from '../../schemas/user.schema';
+import { loginSchema } from '../../schemas/login.schema';
+import { purchaseSchema } from '../../schemas/purchase.schema';
+import { Locator } from '@playwright/test';
 
 test.use(
-     { schema: userSchema }
+     { schema: [loginSchema, purchaseSchema] }
 );
 
-test("tc01- user can purchase an item successfully", async ({ testData, schema, step, basePage, loginPage, electronicComponentsSupplierPage, itemPreviewPage, checkoutPage }) => {
+test("tc01- user can purchase an item successfully", async ({ testData, step, basePage, loginPage, electronicComponentsSupplierPage, itemPreviewPage, checkoutPage }) => {
 
      console.log(testData);
      await step('User logs in to the application', async () => {
           await basePage.navigate('https://demo.testarchitect.com/my-account/');
-          //await loginPage.login(process.env.TEST_USERNAME!, process.env.TEST_PASSWORD!);
           await loginPage.login(testData.username, testData.password)
      });
 
@@ -24,7 +25,8 @@ test("tc01- user can purchase an item successfully", async ({ testData, schema, 
      await step('Select an item, add to cart and proceed to checkout', async () => {
           await electronicComponentsSupplierPage.selectAnItem(testData.itemName);
           await itemPreviewPage.addToCart();
-          expect(await checkoutPage.itemInCart(testData.itemName, testData.itemPrice), 'VP: Item should be in cart').toBeVisible();
+          await expect.soft(checkoutPage.getItemInCart(testData.itemName, testData.itemPrice), 'VP: Grid mode should be active').toBeVisible();
+          await itemPreviewPage.openCart();
           await checkoutPage.proceedToCheckout();
      });
 

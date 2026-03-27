@@ -1,40 +1,56 @@
-import { test as base, expect, TestInfo } from '@playwright/test'; // Thêm TestInfo ở đây
-import Path from 'path';
+// fixtures/base-fixture.ts
+import { test as base } from '../fixtures/base-fixture';
 import { DataLoader } from '../utility/data';
+import Path from 'path';
+import { fileURLToPath } from 'url';
 
-type MyFixtures = {
-  data: any;
-  helloWorld1: string;
-  helloWorld2: string;
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = Path.dirname(__filename);
+
+type TestData = Record<string, any>;
+
+type Fixtures = {
+    testData: TestData;
 };
 
-export const test = base.extend<MyFixtures>({
-  // Định nghĩa kiểu tường minh cho 'use' và 'testInfo'
-  data: async ({ }, use: (value: any) => Promise<void>, testInfo: TestInfo) => {
-    let fullPath: string | null = null;
-    // --- Setup (Initialization logic) ---
-    let caseId = testInfo.title.split('-')[0].trim();
-    const dataLoader = new DataLoader('');
-    fullPath = dataLoader.findFile(`${caseId}.spec.ts`, Path.join(__dirname, '..'));
-    const caseData = dataLoader.getDataFromJson(Path.dirname(fullPath?.toString() || '') + Path.sep + 'data' + `.json`);
-    try {
-      if (caseId in caseData) {
-        console.log(`Loaded data for case ID: ${caseId}`);
-        await use(caseData[caseId]);
-      }
-      } catch (error) {
-        console.error(`No data created for: ${caseId}`, error);
-        await use({});
-      }
-    },
-  
-    helloWorld1: async ({ }, use: (value: string) => Promise<void>) => {
-      await use('H1');
-    },
+export const test = base.extend<Fixtures>({
+    testData: async ({ schema }, use, testInfo) => {
+        let fullPath: string | null = null;
+        // --- Setup (Initialization logic) ---
+        let caseId = testInfo.title.split('-')[0].trim();
+        const dataLoader = new DataLoader('');
+        fullPath = dataLoader.findFile(`${caseId}.spec.ts`, Path.join(__dirname, '..'));
+        const caseData = dataLoader.getDataFromJson(Path.dirname(fullPath?.toString() || '') + Path.sep + 'data' + `.jsonnet`);
+        try {
+            if (caseId in caseData) {
+                console.log(`Loaded data for case ID: ${caseId}`);
+                let realCaseData = caseData[caseId];
+                if (schema) {
+                    const result = schema.safeParse(realCaseData);
 
-      helloWorld2: async ({ }, use: (value: string) => Promise<void>) => {
-        await use('H2');
-      },
+                    if (!result.success) {
+                        console.log('\n❌ INVALID TEST DATA');
+                        console.log(`Test: ${testInfo.title}\n`);
+
+                        for (const issue of result.error.issues) {
+                            const field = issue.path.join('.') || '(root)';
+
+                            console.log(`👉 Field: ${field}`);
+                            console.log(`   Error: ${issue.message}\n`);
+                        }
+
+                        throw new Error(`Invalid test data → ${testInfo.title}`);
+                    }
+                }
+                await use(realCaseData);
+            }
+        } catch (error) {
+            console.error(`No data created for: ${caseId}`, error);
+            await use({} as TestData); // Provide an empty object or handle as needed
+        }
+        // Pass the initialized data to the actual test
+    }
 });
 
-export { expect };
+export const expect = test.expect;
+

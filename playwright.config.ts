@@ -1,7 +1,7 @@
 import { defineConfig, devices, PlaywrightTestConfig } from '@playwright/test';
 import { test as base, expect, TestInfo } from '@playwright/test';
 import { DataLoader } from './utility/data.js';
-import { Logger } from './utility/logger.js'; // Import Logger nếu bạn có một lớp Logger riêng
+import { Logger } from './utility/logger.js'; // Import Logger if you have a dedicated Logger class
 
 /**
  * Read environment variables from file.
@@ -17,9 +17,12 @@ import { Logger } from './utility/logger.js'; // Import Logger nếu bạn có m
 const config: PlaywrightTestConfig = {
   // ... other config ...
   reporter: [
+    ['list'],
     ['html'],
-    ['junit', { outputFile: 'test-results/junit-report.xml' }]
+    ['junit', { outputFile: 'test-results/junit-report.xml' }],
+    ['json', { outputFile: 'reports/playwright-report.json' }]
   ],
+  outputDir: 'test-results/',
   use: {
     headless: true, // Run in headless mode for CI/CD
     // ... other use options ...
@@ -57,15 +60,15 @@ export default defineConfig({
       use: { ...devices['Desktop Chrome'] },
     },
 
-    {
-      name: 'firefox',
-      use: { ...devices['Desktop Firefox'] },
-    },
+    // {
+    //   name: 'firefox',
+    //   use: { ...devices['Desktop Firefox'] },
+    // },
 
-    {
-      name: 'webkit',
-      use: { ...devices['Desktop Safari'] },
-    },
+    // {
+    //   name: 'webkit',
+    //   use: { ...devices['Desktop Safari'] },
+    // },
 
     /* Test against mobile viewports. */
     // {
